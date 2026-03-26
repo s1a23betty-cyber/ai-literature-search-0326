@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 輔助文獻搜尋｜學員講義</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#1c1c1a;--ink2:#4a4846;--ink3:#9b9795;
+  --accent:#4a6fa5;--accent2:#c08040;
+  --green:#3a7a4a;--red:#a04040;
+  --bg:#ffffff;--bg2:#f5f3f0;--bg3:#eae7e2;
+  --line:#d8d4ce;
+}
+body{font-family:'Noto Sans TC',sans-serif;color:var(--ink);background:#fff;font-size:10pt;line-height:1.7}
+
+/* ── Print ── */
+@media print{
+  body{font-size:9.5pt}
+  .no-print{display:none}
+  section{page-break-inside:avoid}
+  .tool-card{page-break-inside:avoid}
+  h1,h2{page-break-after:avoid}
+}
+@page{size:A4;margin:18mm 16mm 18mm 16mm}
+
+/* ── Layout ── */
+.page-wrap{max-width:780px;margin:0 auto;padding:20px 24px}
+
+/* ── Cover ── */
+.cover{background:var(--ink);color:#f0ede8;padding:48px 40px;margin-bottom:28px;position:relative}
+.cover::after{content:'';position:absolute;bottom:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.cover-tag{font-size:9px;letter-spacing:.22em;color:rgba(255,255,255,.45);text-transform:uppercase;margin-bottom:14px}
+.cover h1{font-family:'Noto Serif TC',serif;font-size:26pt;font-weight:400;line-height:1.4;color:#fff;margin-bottom:10px}
+.cover h1 em{color:var(--accent2);font-style:normal}
+.cover-sub{font-size:10.5pt;color:rgba(255,255,255,.6);margin-top:14px;line-height:2}
+
+/* ── Section headers ── */
+h2{font-size:14pt;font-weight:700;color:var(--ink);border-left:4px solid var(--accent);padding-left:10px;margin:28px 0 12px}
+h3{font-size:11.5pt;font-weight:600;color:var(--accent);margin:18px 0 8px}
+h4{font-size:10.5pt;font-weight:600;color:var(--ink);margin:12px 0 5px}
+
+/* ── Tool card ── */
+.tool-card{border:1px solid var(--line);margin:14px 0;overflow:hidden}
+.tool-header{display:flex;align-items:baseline;gap:12px;padding:10px 16px;background:var(--bg2);border-bottom:1px solid var(--line)}
+.tool-name{font-size:12pt;font-weight:700;color:var(--ink)}
+.tool-url{font-size:9pt;color:var(--accent);font-family:monospace}
+.tool-tag{font-size:8pt;letter-spacing:.1em;padding:2px 8px;border:1px solid var(--accent2);color:var(--accent2);margin-left:auto}
+.tool-body{padding:12px 16px;display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tool-body.full{grid-template-columns:1fr}
+.tfield h4{font-size:9.5pt;color:var(--ink3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:4px;margin-top:0;font-weight:500}
+
+/* ── Steps ── */
+ol.steps{list-style:none;counter-reset:step;margin:6px 0}
+ol.steps li{counter-increment:step;padding:5px 0 5px 30px;position:relative;font-size:9.5pt;color:var(--ink2);border-bottom:1px solid var(--bg2)}
+ol.steps li:last-child{border-bottom:none}
+ol.steps li::before{content:counter(step);position:absolute;left:0;top:5px;width:20px;height:20px;background:var(--accent);color:#fff;border-radius:50%;font-size:8pt;font-weight:700;display:flex;align-items:center;justify-content:center;line-height:1}
+ol.steps li strong{color:var(--ink);font-weight:600}
+
+ul.bullets{list-style:none;margin:4px 0}
+ul.bullets li{padding:3px 0 3px 14px;position:relative;font-size:9.5pt;color:var(--ink2)}
+ul.bullets li::before{content:'—';position:absolute;left:0;color:var(--accent2);font-size:9pt}
+ul.bullets li strong{color:var(--ink)}
+
+/* ── Prompt box ── */
+.prompt{background:#1c1c1a;color:#c8c0b4;font-family:'Courier New',monospace;font-size:8.5pt;padding:12px 14px;margin:8px 0;line-height:1.7;white-space:pre-wrap;border-left:3px solid var(--accent2)}
+
+/* ── Table ── */
+table.t{width:100%;border-collapse:collapse;margin:8px 0;font-size:9.5pt}
+table.t th{background:var(--bg2);font-weight:600;font-size:9pt;letter-spacing:.06em;padding:7px 10px;text-align:left;border:1px solid var(--line);color:var(--ink2)}
+table.t td{padding:7px 10px;border:1px solid var(--line);color:var(--ink2);vertical-align:top;line-height:1.55}
+table.t td strong{color:var(--ink)}
+table.t tr:nth-child(even) td{background:#fbfaf8}
+table.t a{color:var(--accent);text-decoration:none}
+
+/* ── Note / Warning ── */
+.note{background:var(--bg2);border-left:3px solid var(--accent2);padding:8px 12px;margin:8px 0;font-size:9pt;color:var(--ink2);line-height:1.65}
+.note strong{color:var(--ink)}
+.warn{background:#fdf0ee;border-left:3px solid var(--red);padding:8px 12px;margin:8px 0;font-size:9pt;color:#704040}
+.warn strong{color:var(--red)}
+.tip{background:#eef5ee;border-left:3px solid var(--green);padding:8px 12px;margin:8px 0;font-size:9pt;color:#304030}
+.tip strong{color:var(--green)}
+
+/* ── Divider ── */
+.divider{height:1px;background:var(--line);margin:24px 0}
+.section-divider{height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2));margin:32px 0 20px}
+
+/* ── Badge row ── */
+.badge-row{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
+.badge{font-size:8.5pt;padding:3px 10px;border:1px solid var(--line);color:var(--ink2);background:var(--bg2)}
+.badge.green{background:#eef5ee;border-color:#aacaaa;color:var(--green)}
+.badge.blue{background:#eef0f8;border-color:#aabbd8;color:var(--accent)}
+.badge.amber{background:#faf3e8;border-color:#d8b88a;color:#7a5020}
+
+/* ── Grid ── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:10px 0}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin:10px 0}
+.box{background:var(--bg2);padding:12px 14px;border:1px solid var(--line)}
+.box h4{font-size:9.5pt;color:var(--accent);margin:0 0 5px}
+.box p{font-size:9pt;color:var(--ink2);line-height:1.6;margin:0}
+
+/* ── Citation box ── */
+.cite-box{background:#f8f6f2;border:1px solid var(--line);padding:10px 14px;margin:8px 0;font-size:9pt;font-family:'Courier New',monospace;line-height:1.65;color:var(--ink2)}
+cite em{font-style:italic}
+
+/* ── Resource links ── */
+.res-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.res-item{border:1px solid var(--line);padding:10px 12px;background:var(--bg2)}
+.res-item .label{font-size:8.5pt;font-weight:600;color:var(--accent);letter-spacing:.06em;margin-bottom:3px}
+.res-item a{font-size:8.5pt;color:var(--ink2);word-break:break-all;display:block;text-decoration:none}
+
+/* ── Challenge cards ── */
+.challenge{display:flex;gap:12px;margin:10px 0}
+.challenge .lv{background:var(--accent);color:#fff;font-weight:700;font-size:10pt;padding:8px 12px;min-width:60px;text-align:center;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:2px}
+.challenge .lv span{font-size:8pt;font-weight:400;opacity:.8}
+.challenge .body{flex:1;background:var(--bg2);padding:10px 14px;border:1px solid var(--line)}
+.challenge .body h4{margin:0 0 4px;font-size:10pt}
+.challenge .body p{font-size:9pt;color:var(--ink2);margin:0;line-height:1.6}
+
+/* ── Print button ── */
+.print-btn{position:fixed;top:16px;right:16px;background:var(--accent);color:#fff;border:none;padding:8px 20px;cursor:pointer;font-family:inherit;font-size:10pt;z-index:999;letter-spacing:.04em}
+.print-btn:hover{background:var(--accent2)}
+</style>
+</head>
+<body>
+
+<button class="print-btn no-print" onclick="window.print()">⬇ 列印 / 存成 PDF</button>
+
+<div class="page-wrap">
+
+<!-- ── COVER ── -->
+<div class="cover">
+  <div class="cover-tag">SR Journal Club 004 · 2026.03.26 · 學員講義</div>
+  <h1>AI 輔助<em>文獻搜尋</em><br>完整操作手冊</h1>
+  <div class="cover-sub">
+    臺北榮民總醫院 科技加護病房　梁巧儒 護理師<br>
+    crliang@vghtpe.gov.tw
+  </div>
+</div>
+
+<!-- ── TOC ── -->
+<h2>目錄</h2>
+<table class="t">
+  <tbody>
+    <tr><td style="width:36px"><strong>1</strong></td><td>課程架構與工具地圖</td></tr>
+    <tr><td><strong>2</strong></td><td>PICO 建立與 Prompt 技巧（Claude）</td></tr>
+    <tr><td><strong>3</strong></td><td>工具詳細操作</td></tr>
+    <tr><td style="padding-left:24px">3.1</td><td>Consensus</td></tr>
+    <tr><td style="padding-left:24px">3.2</td><td>OpenEvidence</td></tr>
+    <tr><td style="padding-left:24px">3.3</td><td>Elicit</td></tr>
+    <tr><td style="padding-left:24px">3.4</td><td>Asta AI</td></tr>
+    <tr><td style="padding-left:24px">3.5</td><td>SciSpace</td></tr>
+    <tr><td style="padding-left:24px">3.6</td><td>Connected Papers</td></tr>
+    <tr><td style="padding-left:24px">3.7</td><td>NotebookLM</td></tr>
+    <tr><td><strong>4</strong></td><td>Vibe Coding 入門</td></tr>
+    <tr><td><strong>5</strong></td><td>AI 倫理・投稿揭露・引用格式</td></tr>
+    <tr><td><strong>6</strong></td><td>Meta-Analysis Pipeline（進階）</td></tr>
+    <tr><td><strong>7</strong></td><td>課後挑戰・開源資源彙整</td></tr>
+  </tbody>
+</table>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<h2>1. 課程架構與工具地圖</h2>
+
+<p style="font-size:9.5pt;color:var(--ink2);margin-bottom:10px">本課程依實證護理「5A 工作流程」串接所有 AI 工具，讓每個工具有明確的使用時機。</p>
+
+<table class="t">
+  <thead>
+    <tr><th style="width:14%">5A 步驟</th><th style="width:28%">任務</th><th style="width:58%">推薦 AI 工具</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Ask</strong><br><span style="font-size:8pt;color:var(--ink3)">確立問題</span></td><td>將臨床觀察轉為結構化 PICO</td><td>Claude / ChatGPT（PICO 建立）<br>Consensus · OpenEvidence（確認研究趨勢）</td></tr>
+    <tr><td><strong>Acquire</strong><br><span style="font-size:8pt;color:var(--ink3)">搜尋文獻</span></td><td>產生搜尋策略、搜尋文獻、去重</td><td>Gemini Gem（搜尋策略）· Elicit（文獻搜尋＋萃取）<br>Connected Papers（滾雪球）· Rayyan AI（去重）</td></tr>
+    <tr><td><strong>Appraise</strong><br><span style="font-size:8pt;color:var(--ink3)">評讀文獻</span></td><td>批判性評讀、偏誤風險評估、數據萃取</td><td>Asta AI · SciSpace（PDF 問答、ROB 定位）<br>NotebookLM（封閉式數據萃取）</td></tr>
+    <tr><td><strong>Apply</strong><br><span style="font-size:8pt;color:var(--ink3)">應用臨床</span></td><td>合成、撰寫、製作衛教教材</td><td>NotebookLM（合成摘要）· Canva（簡報、海報）</td></tr>
+    <tr><td><strong>Assess</strong><br><span style="font-size:8pt;color:var(--ink3)">評估效果</span></td><td>數據分析、品質評估</td><td>Asta AI（數據分析）· sr_tool（PRISMA 彙整）</td></tr>
+  </tbody>
+</table>
+
+<div class="note"><strong>今天 demo 統一使用的臨床問題：</strong><br>
+「插管的老年 ICU 病人，讓家屬參與照護，相較於一般照護，是否能降低譫妄的發生率和持續時間？」<br>
+英文版：<em>"Does family participation reduce delirium incidence in ICU patients?"</em>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<h2>2. PICO 建立與 Prompt 技巧</h2>
+
+<h3>2.1 用 Claude 建立 PICO</h3>
+<p style="font-size:9.5pt;color:var(--ink2);margin-bottom:8px">將模糊的臨床觀察，透過以下提示詞轉換為可執行的 PICO 格式。</p>
+
+<div class="prompt">你是 systematic review 的文獻搜尋專家。
+請把以下臨床問題整理成 PICO 格式，並為每個要素提供建議的 MeSH term 和自由詞（tiab）：
+
+「插管的老年 ICU 病人，讓家屬參與照護，相較於一般照護，
+是否能降低譫妄的發生率和持續時間？」</div>
+
+<div class="warn"><strong>注意：</strong>AI 生成的 MeSH term 需至 <a href="https://meshb.nlm.nih.gov" style="color:var(--accent)">PubMed MeSH Browser</a> 確認真實存在。AI 偶爾會捏造看似合理但不存在的 MeSH 詞。</div>
+
+<h3>2.2 產生 PubMed 搜尋式</h3>
+<div class="prompt">請根據剛才的 PICO，產生一個可以直接貼進 PubMed 的完整搜尋式。
+格式：MeSH [MeSH] + 同義詞 [tiab]，以布林邏輯 AND/OR 連接，
+並加上研究類型限制（Randomized Controlled Trial[pt] OR Systematic Review[pt]）。</div>
+
+<h3>2.3 搜尋式範例（本課程主題）</h3>
+<div class="prompt">("Delirium/prevention & control"[MeSH] OR "delirium"[tiab] OR "ICU delirium"[tiab])
+AND
+("Family"[MeSH] OR "family participation"[tiab] OR "family involvement"[tiab] OR "family-centered care"[tiab])
+AND
+("Intensive Care Units"[MeSH] OR "ICU"[tiab] OR "critical care"[tiab])
+AND
+(Randomized Controlled Trial[pt] OR Systematic Review[pt] OR Meta-Analysis[pt])</div>
+
+<div class="tip"><strong>技巧：</strong>將 Claude 生成的搜尋式先在 PubMed 預覽結果數量。若 &lt;20 篇則太窄，可移除部分限制條件；若 &gt;500 篇則太廣，可增加限制詞或研究類型過濾。</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<h2>3. 七大工具詳細操作</h2>
+
+<!-- ── Consensus ── -->
+<div class="tool-card">
+  <div class="tool-header">
+    <span class="tool-name">3.1　Consensus</span>
+    <a class="tool-url" href="https://consensus.app" target="_blank">consensus.app</a>
+    <span class="tool-tag">Ask 階段 · 免費</span>
+  </div>
+  <div class="tool-body">
+    <div class="tfield">
+      <h4>功能定位</h4>
+      <ul class="bullets">
+        <li>快速了解某個研究問題的<strong>文獻共識傾向</strong></li>
+        <li>Consensus Meter 顯示 Yes / No / Inconclusive 比例</li>
+        <li>每篇結果標注 SJR 嚴謹度評分</li>
+        <li>摘要 Snapshot + Key Takeaway 自動整合</li>
+        <li><strong>用於 SR 之前</strong>的初步探索，確認題目有文獻可做</li>
+      </ul>
+    </div>
+    <div class="tfield">
+      <h4>操作步驟</h4>
+      <ol class="steps">
+        <li>開啟 consensus.app（無需帳號）</li>
+        <li>在搜尋框輸入<strong>英文問題句</strong>（是非題格式效果最佳）<br><em>例：Does family participation reduce delirium in ICU?</em></li>
+        <li>查看頂部 <strong>Consensus Meter</strong> 的 Yes/No/Inconclusive 比例</li>
+        <li>按 SJR 排序，點開最高評分的文獻看摘要</li>
+        <li>有興趣的文獻：複製 DOI → 到 PubMed 搜尋原文</li>
+      </ol>
+    </div>
+    <div class="tfield full">
+      <div class="warn" style="margin:0"><strong>重要限制：</strong>Consensus 資料庫不等於 PubMed 全庫。用 Consensus 掃輪廓、用 PubMed 做完整搜尋，兩件事必須分開進行。Consensus 的結果<strong>不能</strong>直接作為 SR 的文獻清單。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── OpenEvidence ── -->
+<div class="tool-card">
+  <div class="tool-header">
+    <span class="tool-name">3.2　OpenEvidence</span>
+    <a class="tool-url" href="https://openevidence.com" target="_blank">openevidence.com</a>
+    <span class="tool-tag">Ask 階段 · 免費帳號</span>
+  </div>
+  <div class="tool-body">
+    <div class="tfield">
+      <h4>功能定位</h4>
+      <ul class="bullets">
+        <li>專為<strong>臨床醫護人員</strong>設計的實證查詢工具</li>
+        <li>優先呈現「指引 &amp; 建議」等級文獻</li>
+        <li>每個回答都有<strong>可點擊的原始文獻連結</strong></li>
+        <li>與 Mayo Clinic、多個醫學會簽訂合作，資料可信度高</li>
+        <li>支援以 Gemini 最佳化提問</li>
+      </ul>
+    </div>
+    <div class="tfield">
+      <h4>操作步驟</h4>
+      <ol class="steps">
+        <li>開啟 openevidence.com（建議免費帳號登入）</li>
+        <li>輸入臨床問題（中英文皆可）<br><em>例：What is the evidence for family-centered care to prevent ICU delirium?</em></li>
+        <li>查看回覆頂部的 <strong>Guidelines &amp; Recommendations</strong> 區塊</li>
+        <li>點擊每個引用的 PubMed 連結，確認原文真實存在</li>
+        <li>若問題複雜，按「Deep Research」進行分步分析</li>
+      </ol>
+    </div>
+    <div class="tfield full">
+      <div class="note" style="margin:0"><strong>與 ChatGPT 的差異：</strong>OpenEvidence 每條資訊附有原文連結，不會捏造文獻。但仍需進原文確認，不可直接引用其摘要內容。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Elicit ── -->
+<div class="tool-card">
+  <div class="tool-header">
+    <span class="tool-name">3.3　Elicit</span>
+    <a class="tool-url" href="https://elicit.com" target="_blank">elicit.com</a>
+    <span class="tool-tag">Acquire 階段 · 需帳號</span>
+  </div>
+  <div class="tool-body">
+    <div class="tfield">
+      <h4>功能定位</h4>
+      <ul class="bullets">
+        <li><strong>SR 數據萃取</strong>自動化工具</li>
+        <li>自然語言搜尋文獻，自動產生摘要表格</li>
+        <li>可自訂萃取欄位（如：Sample size、Intervention、Outcome）</li>
+        <li>支援免費每月 2 篇研究報告生成</li>
+        <li>可匯出 CSV，作為 SR Table 1 的初稿</li>
+      </ul>
+    </div>
+    <div class="tfield">
+      <h4>操作步驟</h4>
+      <ol class="steps">
+        <li>登入 elicit.com 帳號</li>
+        <li>在搜尋框輸入研究問題<br><em>例：Family participation intervention for ICU delirium prevention</em></li>
+        <li>等待文獻列表出現（約 10–15 秒）</li>
+        <li>點「<strong>Add columns</strong>」→ 新增萃取欄位<br>建議欄位：Sample size / Intervention description / Control group / Primary outcome / Study design</li>
+        <li>按「Extract」，等待 AI 自動填表（約 20–30 秒）</li>
+        <li>點「<strong>Export CSV</strong>」下載表格</li>
+      </ol>
+    </div>
+    <div class="tfield full">
+      <div class="warn" style="margin:0"><strong>驗證提醒：</strong>一定要回原文核對數字，特別是 sample size 和主要 outcome 的數值。AI 有時候會把控制組和實驗組搞混。手動萃取 20 篇約需 4–5 小時；Elicit 約 30 秒，但必須人工審查。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Asta AI ── -->
+<div class="tool-card">
+  <div class="tool-header">
+    <span class="tool-name">3.4　Asta AI（Allen AI）</span>
+    <a class="tool-url" href="https://asta.allen.ai/" target="_blank">asta.allen.ai</a>
+    <span class="tool-tag">Acquire / Appraise · 完全免費</span>
+  </div>
+  <div class="tool-body">
+    <div class="tfield">
+      <h4>功能定位</h4>
+      <ul class="bullets">
+        <li>Allen AI 開發，資料庫覆蓋超大（Semantic Scholar 為基礎）</li>
+        <li>整合多篇文獻，給出綜合回答，每句話附角標</li>
+        <li><strong>相關性篩選</strong>：依與研究問題的相關程度過濾文獻</li>
+        <li><strong>分步深入分析</strong>：輸入問題後，AI 依步驟進行深度研究</li>
+        <li>書目資料可匯出（含 CSV）</li>
+        <li><strong>產出研究報告（PDF）</strong>：可匯出含摘要與引用的完整研究報告</li>
+      </ul>
+    </div>
+    <div class="tfield">
+      <h4>操作步驟</h4>
+      <ol class="steps">
+        <li>開啟 asta.allen.ai（無需帳號）</li>
+        <li>在搜尋框輸入研究問題<br><em>例：family participation delirium prevention ICU</em></li>
+        <li>查看 AI 整合回答，點擊每句話旁的<strong>角標</strong>確認來源文獻</li>
+        <li>點「<strong>Filter by relevance</strong>」，依相關性排序，聚焦最符合 PICO 的文獻</li>
+        <li>勾選目標文獻 → 點「<strong>Export</strong>」匯出書目資料（CSV）</li>
+        <li>點「<strong>Generate Report</strong>」→ 產出含摘要與引用的 PDF 研究報告（免費使用）</li>
+      </ol>
+    </div>
+    <div class="tfield full">
+      <div class="note" style="margin:0"><strong>與 Consensus 的差異：</strong>Asta 的資料庫更大（Semantic Scholar），且提供分步深入分析與完整研究報告輸出，適合需要更系統性整理的文獻搜尋階段。每句回答均附可追蹤的原始文獻角標，驗證方便。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── SciSpace ── -->
+<div class="tool-card">
+  <div class="tool-header">
+    <span class="tool-name">3.5　SciSpace（Typeset）</span>
+    <a class="tool-url" href="https://typeset.io" target="_blank">typeset.io</a>
+    <span class="tool-tag">Appraise 階段 · 需帳號</span>
+  </div>
+  <div class="tool-body">
+    <div class="tfield">
+      <h4>功能定位</h4>
+      <ul class="bullets">
+        <li><strong>跨論文比較</strong>（Compare papers 功能）</li>
+        <li>PDF 問答：與論文直接對話</li>
+        <li>統計數字解讀：框選表格 → 白話說明</li>
+        <li>可自訂比較欄位，產出類似 SR Table 1 的格式</li>
+        <li>Microsoft Copilot 整合：繁體中文問答支援</li>
+      </ul>
+    </div>
+    <div class="tfield">
+      <h4>跨論文比較操作步驟</h4>
+      <ol class="steps">
+        <li>登入 typeset.io，搜尋研究問題</li>
+        <li>勾選 3–5 篇相關文獻</li>
+        <li>點「<strong>Compare</strong>」或「Add to comparison」</li>
+        <li>在比較頁面新增欄位：Intervention details / Sample size / Primary outcome</li>
+        <li>匯出或截圖作為文獻特性表格初稿</li>
+      </ol>
+    </div>
+    <div class="tfield full">
+      <div class="note" style="margin:0"><strong>統計解讀功能：</strong>開啟論文 PDF → 框選複雜的統計表格或 p 值 → 點「Explain this」→ AI 用白話說明數字意義。適合統計背景較弱的學員使用。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Connected Papers ── -->
+<div class="tool-card">
+  <div class="tool-header">
+    <span class="tool-name">3.6　Connected Papers</span>
+    <a class="tool-url" href="https://connectedpapers.com" target="_blank">connectedpapers.com</a>
+    <span class="tool-tag">Acquire 階段 · 免費（限次數）</span>
+  </div>
+  <div class="tool-body">
+    <div class="tfield">
+      <h4>功能定位</h4>
+      <ul class="bullets">
+        <li>以「黃金文獻」為起點，<strong>自動建立引文關聯網絡</strong></li>
+        <li>圓點越大 = 被引用次數越多</li>
+        <li>顏色越深 = 越近代的研究</li>
+        <li>線條越粗 = 兩篇相似度越高</li>
+        <li>Prior Works = 往前追的核心著作</li>
+        <li>Derivative Works = 往後追的延伸研究</li>
+      </ul>
+    </div>
+    <div class="tfield">
+      <h4>操作步驟</h4>
+      <ol class="steps">
+        <li>選定一篇「黃金文獻」（領域最重要的 RCT 或 SR）</li>
+        <li>開啟 connectedpapers.com（無需帳號）</li>
+        <li>在搜尋框輸入<strong>文獻標題</strong>或 <strong>DOI</strong></li>
+        <li>等待系統繪製關聯圖（10–20 秒）</li>
+        <li>查看 <strong>Prior Works</strong> → 加入理論基礎文獻</li>
+        <li>查看 <strong>Derivative Works</strong> → 補充最新延伸研究</li>
+        <li>發現未搜尋到的文獻 → 補入 PubMed 搜尋結果</li>
+      </ol>
+    </div>
+    <div class="tfield full">
+      <div class="note" style="margin:0"><strong>方法學要求：</strong>使用 Connected Papers 做 Citation snowballing，需在論文方法學章節說明「已進行引文追蹤（citation snowballing）」的步驟。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── NotebookLM ── -->
+<div class="tool-card">
+  <div class="tool-header">
+    <span class="tool-name">3.7　NotebookLM</span>
+    <a class="tool-url" href="https://notebooklm.google.com" target="_blank">notebooklm.google.com</a>
+    <span class="tool-tag">Appraise / Apply · 需 Google 帳號 · 免費</span>
+  </div>
+  <div class="tool-body">
+    <div class="tfield">
+      <h4>功能定位</h4>
+      <ul class="bullets">
+        <li><strong>封閉式問答</strong>：只根據你上傳的文獻回答，不會編造</li>
+        <li>每個回答附<strong>可點擊的原文引用</strong>（附頁碼）</li>
+        <li>支援 PDF、Google 文件、網址、YouTube 影片等多種來源</li>
+        <li>Audio Overview：生成雙人主持人 Podcast 討論你的文獻</li>
+        <li>心智圖：視覺化呈現文獻主題結構</li>
+        <li>可上傳最多數十個來源</li>
+      </ul>
+    </div>
+    <div class="tfield">
+      <h4>數據萃取操作步驟</h4>
+      <ol class="steps">
+        <li>登入 notebooklm.google.com（需 Google 帳號）</li>
+        <li>建立新 Notebook → 上傳文獻 PDF（可多篇）</li>
+        <li>等待來源處理完成（左側顯示檔名）</li>
+        <li>在右側問答框輸入萃取問題：<br>
+        <em>「這三篇文獻中，家屬參與 ICU 照護的介入方式有哪些共同要素？」</em></li>
+        <li>查看回答中的<strong>方括號引用標注</strong>，點擊跳至原文對應段落</li>
+        <li>繼續問：<em>「這三篇研究的主要 outcome 有哪些異同？」</em></li>
+      </ol>
+    </div>
+    <div class="tfield full">
+      <div class="g2" style="margin:0;gap:8px">
+        <div class="tip" style="margin:0"><strong>使用技巧：</strong>來源要精煉，不要上傳不相關的文獻，以避免浪費 token。善用「新增至來源」功能，將對話中重要的整理結果保存。</div>
+        <div class="note" style="margin:0"><strong>Audio Overview：</strong>點「Audio Overview」→ 等 2–3 分鐘 → 下載雙語 Podcast。適合通勤學習或做口頭 briefing 前的預習。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<h2>4. Vibe Coding 入門</h2>
+
+<h3>4.1 什麼是 Vibe Coding？</h3>
+<p style="font-size:9.5pt;color:var(--ink2);margin-bottom:8px">用「自然語言」和 AI 對話，讓 AI 自動寫出程式碼。你只需要描述「想要什麼功能」，不需要懂程式語法。</p>
+
+<div class="g3" style="margin:10px 0">
+  <div class="box"><h4>描述需求</h4><p>用中文說「我需要一個可以搜尋文獻並整理摘要的工具」</p></div>
+  <div class="box"><h4>AI 自動生成</h4><p>AI 根據你的描述寫出完整的程式碼</p></div>
+  <div class="box"><h4>對話迭代優化</h4><p>哪裡不對說哪裡，AI 幫你修改到符合需求</p></div>
+</div>
+
+<div class="note"><strong>重點：</strong>不是要你學程式，而是用 AI 幫你把「臨床需求」變成「實用工具」。<br>
+護理師也可以做到。平均 30 分鐘內完成可用工具的初版。</div>
+
+<h3>4.2 萬用 Prompt 模板</h3>
+<p style="font-size:9.5pt;color:var(--ink2);margin-bottom:6px">複製以下模板，填入 [ ] 內容，貼給 Claude / ChatGPT：</p>
+<div class="prompt">我是一位[護理師/護理長/護理研究員]，目前任職於[科別]。
+我需要你幫我製作一個工具，功能如下：
+1. 輸入：[說明使用者要輸入什麼，例如：研究主題、PICO 四要素]
+2. 處理：[說明工具要做什麼，例如：自動產生搜尋關鍵字、整理成表格]
+3. 輸出：[說明最終要看到什麼，例如：Excel 表格、文字報告、網頁介面]
+使用環境：[說明在哪裡使用，例如：只在 Claude 對話中使用 / 需要可執行的網頁]
+語言需求：繁體中文介面
+
+小訣竅：描述越具體，AI 做出來的工具越符合需求。
+遇到問題就直接說「這裡不對，請修改___」</div>
+
+<h3>4.3 入門路徑（三個層次）</h3>
+<div class="challenge">
+  <div class="lv" style="background:#5a7a9a"><div>⭑</div><span>入門</span></div>
+  <div class="body">
+    <h4>Claude Projects 問答</h4>
+    <p>claude.ai → 建立 Project → 上傳文獻 PDF → 直接問答<br>今天晚上就可以做到，不需要任何技術背景</p>
+  </div>
+</div>
+<div class="challenge">
+  <div class="lv" style="background:#4a6a8a"><div>⭑⭑</div><span>進階</span></div>
+  <div class="body">
+    <h4>用 Claude 做工具（claude.ai）</h4>
+    <p>在 claude.ai 描述你要什麼功能 → AI 生成可執行的 HTML 工具<br>例：「幫我做一個 PICO 搜尋關鍵字產生器的網頁」</p>
+  </div>
+</div>
+<div class="challenge">
+  <div class="lv" style="background:#3a5a7a"><div>⭑⭑⭑</div><span>達人</span></div>
+  <div class="body">
+    <h4>Claude Code（本機開發環境）</h4>
+    <p>安裝 Claude Code → 用中文描述需求 → AI 自動寫程式、執行、除錯<br>可做出有 GUI 介面的完整工具（如本課程的 sr_tool）</p>
+  </div>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<h2>5. AI 倫理・投稿揭露・引用格式</h2>
+
+<h3>5.1 投稿必備：透明揭露與作者責任</h3>
+
+<table class="t">
+  <thead><tr><th>原則</th><th>說明</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong style="color:var(--red)">作者資格（Authorship）</strong></td>
+      <td>AI 無法承擔法律與正確性責任，<strong>絕對不能列為作者</strong></td>
+    </tr>
+    <tr>
+      <td><strong style="color:var(--green)">透明揭露（Transparency）</strong></td>
+      <td>必須在 <strong>Methods</strong> 或 <strong>Acknowledgements</strong> 中聲明工具名稱、版本、使用目的（如：語言潤飾、初篩）</td>
+    </tr>
+    <tr>
+      <td><strong>出版商政策</strong><br><span style="font-size:8.5pt;color:var(--ink3)">Elsevier / Springer</span></td>
+      <td>• 允許：文字與語言潤飾<br>• 嚴禁：使用 AI 生成圖像（除非圖像本身為研究對象）<br>• 原則：作者須對所有內容負全責</td>
+    </tr>
+    <tr>
+      <td><strong>PRISMA flow 標示</strong></td>
+      <td>在各篩選階段標示 AI 參與的節點與使用的工具名稱</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>5.2 Methods 聲明範例</h3>
+<div class="cite-box">Title/abstract screening was assisted by AI (Claude 3.7 Sonnet, Anthropic, accessed 2025-02),
+with all results independently verified by two human reviewers.
+Data extraction was performed manually by two independent reviewers
+and cross-checked against AI-generated summaries for efficiency.
+All AI-assisted steps are documented in the supplementary materials.</div>
+
+<h3>5.3 APA 7th 版 AI 工具引用格式</h3>
+<table class="t">
+  <thead><tr><th style="width:22%">工具</th><th style="width:22%">引用作者</th><th>APA 7th 範例</th></tr></thead>
+  <tbody>
+    <tr><td>ChatGPT</td><td>OpenAI</td><td>OpenAI. (2023). <em>ChatGPT (Mar 24 version)</em> [Large language model]. https://chat.openai.com</td></tr>
+    <tr><td>Claude</td><td>Anthropic</td><td>Anthropic. (2025). <em>Claude 3.7 Sonnet</em> [Large language model]. https://claude.ai</td></tr>
+    <tr><td>Gemini</td><td>Google AI</td><td>Google AI. (2025). <em>Gemini</em> [Large language model]. https://gemini.google.com</td></tr>
+    <tr><td>Perplexity</td><td>Perplexity AI</td><td>Perplexity AI. (2025). <em>Perplexity</em> [AI search engine]. https://perplexity.ai</td></tr>
+  </tbody>
+</table>
+<div class="note">資料來源：政大圖書館 AI 引用指引 <a href="https://lib.video.nccu.edu.tw/media/393" style="color:var(--accent)">https://lib.video.nccu.edu.tw/media/393</a><br>
+<strong>注意：</strong>引用 AI 需標明版本號與存取日期；若 AI 生成的完整文字對讀者有重要性，應放入附錄（Appendix）。</div>
+
+<h3>5.4 研究者的終極防線：Never trust, always verify</h3>
+<p style="font-size:9.5pt;color:var(--ink2);margin-bottom:8px">AI 幻覺的真實風險：學者引用幽靈文獻。每次使用 AI 輸出，必須完成以下三步驟驗證：</p>
+
+<table class="t">
+  <thead><tr><th style="width:22%">驗證步驟</th><th>做什麼</th><th style="width:38%">具體操作</th></tr></thead>
+  <tbody>
+    <tr>
+      <td><strong>查核存在性</strong><br>(Existence)</td>
+      <td>這篇文獻真的存在嗎？</td>
+      <td>檢查 DOI 是否有效；到 PubMed 或圖書館資料庫確認可尋獲</td>
+    </tr>
+    <tr>
+      <td><strong>查核內容</strong><br>(Content)</td>
+      <td>AI 引用的論點正確嗎？</td>
+      <td>閱讀原文，確認原作者是否確實提出 AI 所引用的論點</td>
+    </tr>
+    <tr>
+      <td><strong>查核脈絡</strong><br>(Context)</td>
+      <td>AI 有沒有誤讀？</td>
+      <td>確認 AI 是否誤將「反駁」當「支持」，或忽略研究限制與適用範圍</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>5.5 AI 與人類的責任分工</h3>
+<div class="g2">
+  <div class="tip">
+    <strong>AI 可擔任第二位審查者</strong><br>
+    GPT-4O 數據萃取準確率 ≥ 人類審查員（Andersen et al., 2025, Cochrane; Cao et al., 2025）<br>
+    人類第二審查員可轉為「仲裁者（Reconciler）」，負責裁定 AI 與第一位人類審查員的歧異
+  </div>
+  <div class="warn">
+    <strong>人類必須負最終責任</strong><br>
+    • 對研究結論完整負責<br>
+    • 驗證 AI 輸出 vs 原文<br>
+    • AI 降低重複性工作量，但不分擔學術與法律責任
+  </div>
+</div>
+
+<h3>5.6 建立「人類創作投入」的數位證據</h3>
+<p style="font-size:9.5pt;color:var(--ink2);margin-bottom:8px">著作權保護的核心在於人類創作投入（Human Creative Input）。編輯與判斷的歷程越完整，面對質疑時的自保能力越強。</p>
+<div class="g2">
+  <ul class="bullets">
+    <li><strong>版本歷程（Version History）</strong>：定期儲存，保留 Word 追蹤修訂或 Google Docs 歷史</li>
+    <li><strong>提示詞紀錄（Prompt Logging）</strong>：截圖或另存文件，保留與 AI 的關鍵對話脈絡</li>
+  </ul>
+  <ul class="bullets">
+    <li><strong>螢幕錄影（Screen Recording）</strong>：針對關鍵資料分析步驟錄影，留下操作證據</li>
+    <li><strong>匯出資料（Export Data）</strong>：使用平台內建功能封存完整對話紀錄，確保歷程可追溯</li>
+  </ul>
+</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<h2>6. Meta-Analysis Pipeline（進階）</h2>
+
+<div class="note">
+  <strong>這是誰做的？</strong><br>
+  htlin222（林協霆醫師）用 <strong>Claude Code Skills</strong> 打造的開源工具，實現從題目到結論的全自動化統合分析。
+  每個環節有獨立的 Slash Command（暗口令）驅動，CLAUDE.md 告訴 Agent 如何操作各階段 Skills。
+</div>
+
+<h3>6.1 工具的四個 Skill 分類</h3>
+<table class="t">
+  <thead><tr><th style="width:15%">步驟</th><th style="width:20%">Skill 分類</th><th>AI 自動完成的工作</th></tr></thead>
+  <tbody>
+    <tr><td>Step 1</td><td><strong>搜尋</strong></td><td>自動搜尋文獻、產生搜尋策略，整合多個資料庫</td></tr>
+    <tr><td>Step 2</td><td><strong>評讀</strong></td><td>ROB 2.0 / CASP 批判性評讀，標準化輸出格式</td></tr>
+    <tr><td>Step 3</td><td><strong>程式碼</strong></td><td>自動生成統計分析程式碼（Python / R）</td></tr>
+    <tr><td>Step 4</td><td><strong>R 套件</strong></td><td>依研究問題選擇適合的 R 套件與分析方法</td></tr>
+  </tbody>
+</table>
+
+<h3>6.2 開源資源連結</h3>
+<div class="res-grid">
+  <div class="res-item">
+    <div class="label">FB 貼文（作者完整說明）</div>
+    <a href="https://www.facebook.com/share/p/1HVGss8JQb/" target="_blank">https://www.facebook.com/share/p/1HVGss8JQb/</a>
+  </div>
+  <div class="res-item">
+    <div class="label">GitHub 開源工具</div>
+    <a href="https://github.com/htlin222/meta-pipe" target="_blank">https://github.com/htlin222/meta-pipe</a>
+  </div>
+</div>
+
+<div class="tip">「That's it. Claude will handle the rest.」<br>
+AI-assisted, end-to-end meta-analysis with reproducible tooling。<br>
+這個工具目前需要有 Claude Code 環境和基本的 Git 操作，建議 Lv.3 達人級學員嘗試。</div>
+
+<div class="section-divider"></div>
+
+<!-- ══════════════════════════════════════════════ -->
+<h2>7. 課後挑戰・開源資源彙整</h2>
+
+<h3>7.1 課後挑戰三關卡</h3>
+<div class="challenge">
+  <div class="lv"><div>⭑</div><span>Lv.1 入門</span></div>
+  <div class="body">
+    <h4>PICO → 搜尋關鍵字工具</h4>
+    <p>用萬用模板，請 Claude 做一個「把 PICO 轉成 PubMed 搜尋關鍵字」的工具。<br>貼上你自己的研究題目，看看 AI 生成的搜尋式是否可用。</p>
+  </div>
+</div>
+<div class="challenge">
+  <div class="lv"><div>⭑⭑</div><span>Lv.2 進階</span></div>
+  <div class="body">
+    <h4>Elicit 文獻 → 品質評估表格</h4>
+    <p>把 Elicit 搜尋到的文獻（匯出 CSV），請 AI 自動整理成品質評估表格（含 Study design、Sample size、Risk of bias level）。</p>
+  </div>
+</div>
+<div class="challenge">
+  <div class="lv"><div>⭑⭑⭑</div><span>Lv.3 達人</span></div>
+  <div class="body">
+    <h4>完整「文獻回顧助手」</h4>
+    <p>設計一個完整的文獻回顧助手，可以從輸入 PICO 題目，一路跑到 GRADE 評分輸出。<br>參考：meta-pipe（github.com/htlin222/meta-pipe）</p>
+  </div>
+</div>
+
+<h3>7.2 工具資源總表</h3>
+<table class="t">
+  <thead><tr><th>工具</th><th>網址</th><th>帳號</th><th>費用</th><th>主要用途</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Consensus</strong></td><td><a href="https://consensus.app">consensus.app</a></td><td>不需要</td><td>免費</td><td>文獻共識快速掃描</td></tr>
+    <tr><td><strong>OpenEvidence</strong></td><td><a href="https://openevidence.com">openevidence.com</a></td><td>建議申請</td><td>免費</td><td>臨床問題實證查詢</td></tr>
+    <tr><td><strong>Elicit</strong></td><td><a href="https://elicit.com">elicit.com</a></td><td>需要</td><td>免費方案</td><td>文獻搜尋＋數據萃取</td></tr>
+    <tr><td><strong>Asta AI</strong></td><td><a href="https://asta.allen.ai">asta.allen.ai</a></td><td>不需要</td><td>完全免費</td><td>深度研究分析＋報告輸出（PDF）</td></tr>
+    <tr><td><strong>SciSpace</strong></td><td><a href="https://typeset.io">typeset.io</a></td><td>需要</td><td>免費方案</td><td>跨論文比較＋統計解讀</td></tr>
+    <tr><td><strong>Connected Papers</strong></td><td><a href="https://connectedpapers.com">connectedpapers.com</a></td><td>不需要</td><td>免費（限次）</td><td>引文滾雪球網絡圖</td></tr>
+    <tr><td><strong>NotebookLM</strong></td><td><a href="https://notebooklm.google.com">notebooklm.google.com</a></td><td>需 Google</td><td>完全免費</td><td>封閉式文獻問答＋Audio</td></tr>
+    <tr><td><strong>Rayyan AI</strong></td><td><a href="https://rayyan.ai">rayyan.ai</a></td><td>需要</td><td>免費方案</td><td>文獻去重＋協作篩選</td></tr>
+    <tr><td><strong>Claude</strong></td><td><a href="https://claude.ai">claude.ai</a></td><td>需要</td><td>免費方案</td><td>PICO 建立、Prompt、工具開發</td></tr>
+  </tbody>
+</table>
+
+<h3>7.3 延伸學習資源</h3>
+<div class="res-grid">
+  <div class="res-item"><div class="label">AI 引用格式指引（政大圖書館）</div><a href="https://lib.video.nccu.edu.tw/media/393" target="_blank">https://lib.video.nccu.edu.tw/media/393</a></div>
+  <div class="res-item"><div class="label">AI 引用作者查詢表（Wayne State）</div><a href="https://guides.lib.wayne.edu/c.php?g=1368920&p=10302525" target="_blank">guides.lib.wayne.edu/c.php?g=1368920&p=10302525</a></div>
+  <div class="res-item"><div class="label">Meta-Analysis Pipeline（GitHub）</div><a href="https://github.com/htlin222/meta-pipe" target="_blank">https://github.com/htlin222/meta-pipe</a></div>
+  <div class="res-item"><div class="label">Meta-pipe 作者 FB 說明貼文</div><a href="https://www.facebook.com/share/p/1HVGss8JQb/" target="_blank">https://www.facebook.com/share/p/1HVGss8JQb/</a></div>
+  <div class="res-item"><div class="label">CASP 2024 SR 評讀機器人 v1.0</div><a href="https://reurl.cc/9bdWa8" target="_blank">https://reurl.cc/9bdWa8</a></div>
+  <div class="res-item"><div class="label">CASP 2024 SR 評讀機器人 v2.0</div><a href="https://reurl.cc/LQv2oa" target="_blank">https://reurl.cc/LQv2oa</a></div>
+</div>
+
+<div class="divider"></div>
+
+<div style="text-align:center;padding:20px 0;color:var(--ink3);font-size:9pt">
+  SR Journal Club 004 · 2026.03.26<br>
+  臺北榮民總醫院 科技加護病房 · 梁巧儒 · crliang@vghtpe.gov.tw<br><br>
+  <em style="color:var(--accent2)">「AI 不取代研究者——讓研究者走得更遠。」</em>
+</div>
+
+</div><!-- /page-wrap -->
+
+<script>
+// Auto-open print dialog hint
+document.querySelector('.print-btn').title = '建議使用 Chrome 或 Edge，選「另存為 PDF」';
+</script>
+</body>
+</html>
