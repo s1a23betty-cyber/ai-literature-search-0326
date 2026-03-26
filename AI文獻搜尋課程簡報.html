@@ -238,7 +238,8 @@ table.t tr:hover td{background:var(--bg2)}
   <div class="sb-sec">進階應用</div>
   <div class="sb-item" onclick="jumpTo(14)" data-s="14,15,16,17,18,19,21"><div class="sb-dot"></div>Vibe Coding</div>
   <div class="sb-item" onclick="jumpTo(20)" data-s="20"><div class="sb-dot"></div>Claude Skills</div>
-  <div class="sb-item" onclick="jumpTo(22)" data-s="22,23"><div class="sb-dot"></div>倫理・帶走清單</div>
+  <div class="sb-item" onclick="jumpTo(22)" data-s="22"><div class="sb-dot"></div>倫理・揭露・審查</div>
+  <div class="sb-item" onclick="jumpTo(23)" data-s="23"><div class="sb-dot"></div>Meta-Analysis Pipeline</div>
   <div class="sb-item" onclick="jumpTo(24)" data-s="24"><div class="sb-dot"></div>結尾</div>
 </div>
 
@@ -250,7 +251,7 @@ table.t tr:hover td{background:var(--bg2)}
   <div class="tag">SR &amp; Meta-analysis Journal Club · 004 · 2026.03.26</div>
   <h1>AI 輔助文獻搜尋<br><em>從 PICO 到系統性回顧</em></h1>
   <div class="rule c"></div>
-  <div class="sub" style="color:#6a6460">臺北榮民總醫院 胸腔加護病房 · 梁巧儒</div>
+  <div class="sub" style="color:#6a6460">臺北榮民總醫院 科技加護病房 · 梁巧儒</div>
   <div class="slide-no">00</div>
 </div>
 
@@ -264,7 +265,7 @@ table.t tr:hover td{background:var(--bg2)}
     <h1>梁巧儒<br><em>Chiao-Ju Liang</em></h1>
     <div class="rule"></div>
     <div class="tl" style="margin-top:4px">
-      <div class="tl-item"><div class="tl-no">🏥</div><div class="tl-body"><strong>臺北榮民總醫院</strong><br><span style="font-size:12px">護理部 · 胸腔加護病房（TICU）</span></div></div>
+      <div class="tl-item"><div class="tl-no">🏥</div><div class="tl-body"><strong>臺北榮民總醫院</strong><br><span style="font-size:12px">護理部 · 科技加護病房（TICU）</span></div></div>
       <div class="tl-item"><div class="tl-no">🎓</div><div class="tl-body"><strong>國立陽明交通大學</strong><br><span style="font-size:12px">護理學研究所 碩士</span></div></div>
       <div class="tl-item"><div class="tl-no">🏫</div><div class="tl-body"><span style="font-size:12.5px">台灣實證護理學會<br><strong>AI 輔助實證護理工作坊講師</strong></span></div></div>
       <div class="tl-item"><div class="tl-no">✉</div><div class="tl-body"><span style="font-size:12px">crliang@vghtpe.gov.tw</span></div></div>
@@ -293,7 +294,7 @@ table.t tr:hover td{background:var(--bg2)}
     <div style="text-align:center">
       <div style="font-size:13px;color:var(--ink3);letter-spacing:.12em;text-transform:uppercase;margin-bottom:10px">SR Journal Club · 004</div>
       <div style="width:32px;height:1px;background:var(--accent2);margin:0 auto 10px"></div>
-      <div style="font-size:12.5px;color:var(--ink2);line-height:2">臺北榮民總醫院 胸腔加護病房<br>梁巧儒<br>2026.03.26</div>
+      <div style="font-size:12.5px;color:var(--ink2);line-height:2">臺北榮民總醫院 科技加護病房<br>梁巧儒<br>2026.03.26</div>
     </div>
   </div>
   <div class="slide-no">02</div>
@@ -911,60 +912,108 @@ O: delirium incidence, duration
   <div class="slide-no">21</div>
 </div>
 
-<!-- 22 ETHICS ────────────────────────────────────── -->
-<div class="slide lv" style="display:none">
-  <div class="tag">AI 倫理邊界</div>
-  <h2>什麼可以用 AI，什麼不行</h2>
-  <div class="g2" style="margin-top:10px">
-    <div>
-      <h3 style="color:var(--green)">✓ AI 可以輔助</h3>
-      <ul class="li ck" style="margin-top:8px">
-        <li>自動產生搜尋關鍵字與 MeSH</li>
-        <li>大量文獻的<strong>標題/摘要初篩</strong></li>
-        <li>跨文獻比較與主題合成（草稿）</li>
-        <li>PRISMA flow 數字彙整</li>
-        <li>ROB 2.0 相關段落<strong>定位標注</strong></li>
-      </ul>
+<!-- 22 ETHICS & RESPONSIBILITY ───────────────────── -->
+<div class="slide ls" style="display:none">
+  <div class="cl b2">
+    <div class="tag">投稿 · 揭露 · 引用格式</div>
+    <h2 style="margin-bottom:6px;padding-bottom:6px">投稿必備：<br>透明揭露與作者責任</h2>
+    <div class="rule" style="margin:6px 0"></div>
+    <div style="display:flex;flex-direction:column;gap:7px;margin-top:0">
+      <div class="card" style="border-left:3px solid var(--red)">
+        <div class="card-lbl" style="color:var(--red)">作者資格 (Authorship)</div>
+        <div class="card-body" style="font-size:12.5px">AI 無法承擔法律與正確性責任，<strong>絕對不能列為作者</strong></div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--green)">
+        <div class="card-lbl" style="color:var(--green)">透明揭露 (Transparency)</div>
+        <div class="card-body" style="font-size:12.5px">在 <strong>Methods</strong> 或 <strong>Acknowledgements</strong> 中聲明工具名稱、版本、使用目的</div>
+      </div>
+      <div class="card" style="border-left:3px solid var(--accent)">
+        <div class="card-lbl">出版商政策（Elsevier / Springer）</div>
+        <div class="card-body" style="font-size:12.5px">允許文字潤飾・嚴禁 AI 生成圖像・<strong>作者對所有內容負全責</strong></div>
+      </div>
     </div>
-    <div>
-      <h3 style="color:var(--red)">✗ AI 不能取代</h3>
-      <ul class="li ex" style="margin-top:8px">
-        <li><strong>兩位獨立審查者</strong>全文篩選</li>
-        <li>ROB 2.0 / CASP 最終偏誤判斷</li>
-        <li>未驗證原文就直接引用 AI 輸出</li>
-        <li>GRADE 等級評定</li>
-        <li>上傳機構敏感資料至雲端 AI</li>
-      </ul>
+    <div class="note" style="margin-top:8px;font-size:11.5px"><strong>APA 7th 引用範例：</strong><br>Anthropic. (2025). <em>Claude 3.7 Sonnet</em> [Large language model]. https://claude.ai<br><span style="color:var(--ink3)">需標明版本・存取日期・AI 是方法工具不是作者</span></div>
+  </div>
+  <div class="cr">
+    <div class="tag">研究者的終極防線</div>
+    <div style="font-size:13px;font-weight:500;color:var(--ink);letter-spacing:.04em;margin:8px 0 10px">Never trust, always verify</div>
+    <div class="flow" style="flex-direction:column;gap:6px">
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="background:var(--accent);color:#fff;font-size:11px;padding:3px 8px;white-space:nowrap;margin-top:2px;letter-spacing:.06em">查核存在性</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.65">DOI 是否有效？能否在圖書館資料庫尋獲？</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="background:var(--accent);color:#fff;font-size:11px;padding:3px 8px;white-space:nowrap;margin-top:2px;letter-spacing:.06em">查核內容</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.65">閱讀原文，確認原作者是否真的提出 AI 所引用的論點</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:10px">
+        <div style="background:var(--accent);color:#fff;font-size:11px;padding:3px 8px;white-space:nowrap;margin-top:2px;letter-spacing:.06em">查核脈絡</div>
+        <div style="font-size:13px;color:var(--ink2);line-height:1.65">AI 是否誤將「反駁」當「支持」，或忽略研究限制？</div>
+      </div>
+    </div>
+    <div class="note" style="margin-top:12px;border-left-color:var(--red)">
+      <strong>AI 幻覺的真實風險：</strong>學者引用幽靈文獻。<br>
+      AI 可擔任第二位審查者，但<strong>人類須對最終研究結論負完整責任</strong>。<br>
+      <span style="font-size:11px;color:var(--ink3)">Andersen et al. 2025, Cochrane · Cao et al. 2025 [Preprint]</span>
     </div>
   </div>
-  <div class="note" style="margin-top:14px"><strong>方法學透明化：</strong>需說明 AI 工具名稱、版本、使用範圍、人工審核步驟<br>（PRISMA 2020 要求）</div>
   <div class="slide-no">22</div>
 </div>
 
-<!-- 23 TAKEAWAY ──────────────────────────────────── -->
+<!-- 23 META-PIPE ──────────────────────────────────── -->
 <div class="slide ls" style="display:none">
   <div class="cl b2">
-    <div class="tag">帶走清單</div>
-    <h2>四個明天<br>就能用的工具</h2>
+    <div class="tag">Vibe Coding 實例</div>
+    <h2>AI 全自動化<br>Meta-Analysis Pipeline</h2>
     <div class="rule"></div>
-    <table class="t" style="margin-top:4px">
-      <thead><tr><th style="width:38%">工具</th><th style="width:62%">立即行動</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Consensus</strong></td><td>輸入你的研究問題試試</td></tr>
-        <tr><td><strong>OpenEvidence</strong></td><td>查一個你手上的臨床問題</td></tr>
-        <tr><td><strong>Connected Papers</strong></td><td>輸入你最重要的那篇文獻</td></tr>
-        <tr><td><strong>NotebookLM</strong></td><td>上傳 3 篇文獻，試做問答</td></tr>
-      </tbody>
-    </table>
-  </div>
-  <div class="cr">
-    <div class="tag">三種 Vibe Coding 入門</div>
-    <div class="g2" style="margin-top:8px">
-      <div class="card"><div class="card-lbl">⭑ Claude Projects</div><div class="card-body">claude.ai → 建立 Project<br>上傳文獻 → 直接問答</div></div>
-      <div class="card"><div class="card-lbl">⭑⭑ Claude Code</div><div class="card-body">說需求 → AI 修改工具<br>「我要新增 xxx 功能」</div></div>
+    <div style="font-size:13px;color:var(--ink2);margin-bottom:10px;line-height:1.7">由大神 <strong>htlin222</strong> 用 Claude Code Skills 打造<br>從題目到結論，全程 AI 協作</div>
+    <div class="flow" style="flex-wrap:nowrap;gap:0">
+      <div class="flow-i" style="flex:1;text-align:center;padding:10px 6px">
+        <div style="font-size:10px;color:var(--accent2);letter-spacing:.1em;margin-bottom:3px">STEP 1</div>
+        <strong style="font-size:12px">搜尋</strong><br>
+        <span style="font-size:11px;color:var(--ink3)">自動搜尋文獻<br>產生策略</span>
+      </div>
+      <div class="flow-a">›</div>
+      <div class="flow-i" style="flex:1;text-align:center;padding:10px 6px">
+        <div style="font-size:10px;color:var(--accent2);letter-spacing:.1em;margin-bottom:3px">STEP 2</div>
+        <strong style="font-size:12px">評讀</strong><br>
+        <span style="font-size:11px;color:var(--ink3)">ROB 2.0 /<br>CASP 批判評讀</span>
+      </div>
+      <div class="flow-a">›</div>
+      <div class="flow-i" style="flex:1;text-align:center;padding:10px 6px">
+        <div style="font-size:10px;color:var(--accent2);letter-spacing:.1em;margin-bottom:3px">STEP 3</div>
+        <strong style="font-size:12px">程式碼</strong><br>
+        <span style="font-size:11px;color:var(--ink3)">自動生成<br>統計分析程式</span>
+      </div>
+      <div class="flow-a">›</div>
+      <div class="flow-i" style="flex:1;text-align:center;padding:10px 6px">
+        <div style="font-size:10px;color:var(--accent2);letter-spacing:.1em;margin-bottom:3px">STEP 4</div>
+        <strong style="font-size:12px">R 套件</strong><br>
+        <span style="font-size:11px;color:var(--ink3)">選擇適合<br>的分析方法</span>
+      </div>
     </div>
-    <div class="card" style="margin-top:10px"><div class="card-lbl">⭑⭑⭑ 從零 Vibe Coding</div><div class="card-body">用自然語言描述你要的工具，Claude Code 幫你寫出來——護理師也可以做到</div></div>
-    <div class="band" style="margin-top:12px;font-size:13px">"重點不是會寫程式，是知道自己要什麼。"</div>
+    <div class="note" style="margin-top:10px;font-size:12px">CLAUDE.md 告訴 Agent 如何操作各階段 Skills，<br>每個環節有獨立的暗口令（Slash Command）驅動</div>
+  </div>
+  <div class="cr" style="padding-left:32px">
+    <div class="tag">開源資源</div>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-top:10px">
+      <div class="card">
+        <div class="card-lbl">FB 貼文（作者完整說明）</div>
+        <div class="card-body" style="font-size:12px">
+          <a href="https://www.facebook.com/share/p/1HVGss8JQb/" target="_blank" style="color:var(--accent);word-break:break-all">https://www.facebook.com/share/p/1HVGss8JQb/</a>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-lbl">GitHub 開源工具</div>
+        <div class="card-body" style="font-size:12px">
+          <a href="https://github.com/htlin222/meta-pipe" target="_blank" style="color:var(--accent);word-break:break-all">https://github.com/htlin222/meta-pipe</a>
+        </div>
+      </div>
+    </div>
+    <div class="band" style="margin-top:16px;font-style:normal;font-size:13px">"That's it. Claude will handle the rest."</div>
+    <div style="font-size:12px;color:var(--ink3);margin-top:10px;line-height:1.8">
+      AI-assisted, end-to-end meta-analysis<br>with reproducible tooling
+    </div>
   </div>
   <div class="slide-no">23</div>
 </div>
@@ -974,7 +1023,7 @@ O: delirium incidence, duration
   <div class="tag">Thank You</div>
   <h1>AI 不取代研究者<br><em>讓研究者走得更遠</em></h1>
   <div class="rule c"></div>
-  <div class="sub" style="color:#6a6460">台灣實證護理學會 AI 輔助實證護理工作坊<br>臺北榮民總醫院 胸腔加護病房 · 梁巧儒<br>crliang@vghtpe.gov.tw</div>
+  <div class="sub" style="color:#6a6460">臺北榮民總醫院 科技加護病房 · 梁巧儒<br>crliang@vghtpe.gov.tw</div>
   <div class="slide-no">24</div>
 </div>
 
